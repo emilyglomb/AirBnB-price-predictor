@@ -9,8 +9,8 @@ Model: paraphrase-multilingual-MiniLM-L12-v2
   - 384-dimensional, multilingual, relatively fast.
 
 """
-
 import os
+from typing import Optional
 import pandas as pd
 
 MODEL_NAME = "paraphrase-multilingual-MiniLM-L12-v2"
@@ -20,8 +20,8 @@ def compute_review_embeddings(reviews: pd.DataFrame,
                               comment_col: str = "comment_clean",
                               listing_id_col: str = "listing_id",
                               batch_size: int = 128,
-                              sample_n: int | None = None,
-                              cache_path: str | None = None) -> pd.DataFrame:
+                              sample_n: Optional[int] = None,
+                              cache_path: Optional[str] = None) -> pd.DataFrame:
     """Compute one embedding vector per review.
 
     Returns a dataframe with [listing_id_col, emb_0 .. emb_{d-1}].
@@ -46,7 +46,6 @@ def compute_review_embeddings(reviews: pd.DataFrame,
         df[comment_col].tolist(),
         batch_size=batch_size,
         show_progress_bar=True,
-        convert_to_numpy=True,
         normalize_embeddings=True,
     )
 
@@ -63,7 +62,7 @@ def compute_review_embeddings(reviews: pd.DataFrame,
 def build_embedding_features(review_embeddings: pd.DataFrame,
                              listing_id_col: str = "listing_id") -> pd.DataFrame:
     """Mean-pool review embeddings to one vector per listing (key `id`)."""
-    feats = review_embeddings.groupby(listing_id_col).mean()
+    feats = review_embeddings.groupby(listing_id_col).mean(numeric_only=True)
     feats.index.name = "id"
     return feats.reset_index()
 

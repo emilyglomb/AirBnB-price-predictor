@@ -20,6 +20,7 @@ hundred thousand reviews it takes hours. Recommendations:
 """
 
 import os
+from typing import Optional
 import pandas as pd
 
 MODEL_NAME = "nlptown/bert-base-multilingual-uncased-sentiment"
@@ -38,8 +39,8 @@ def _expected_stars(score_dicts) -> float:
 def compute_review_sentiment(reviews: pd.DataFrame,
                              comment_col: str = "comment_clean",
                              batch_size: int = 64,
-                             sample_n: int | None = None,
-                             cache_path: str | None = None) -> pd.DataFrame:
+                             sample_n: Optional[int] = None,
+                             cache_path: Optional[str] = None) -> pd.DataFrame:
     """Compute a per-review sentiment score (expected stars, 1-5).
 
     Returns the dataframe with an added `sent_stars` column.

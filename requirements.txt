@@ -1,0 +1,20 @@
+# Core data
+pandas==3.0.1
+numpy==2.4.3
+scipy==1.17.1
+pyarrow==24.0.0
+
+# ML
+scikit-learn==1.8.0
+xgboost
+catboost
+shap
+
+# NLP (reviews module)
+torch==2.10.0
+transformers==5.12.1
+sentence-transformers==5.6.0
+
+# Visualisation
+matplotlib
+seaborn
